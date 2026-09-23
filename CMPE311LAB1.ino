@@ -2,16 +2,16 @@
 String inputBuffer = "";  // builds up one line of typed input, character by character
 
 // ===== LED timing state (one set per LED, so they can blink independently) =====
-int currentLED1millis  = 0;
-int currentLED2millis  = 0;
-int previousLED1millis = 0;
-int previousLED2millis = 0;
+unsigned long currentLED1millis  = 0;
+unsigned long currentLED2millis  = 0;
+unsigned long previousLED1millis = 0;
+unsigned long previousLED2millis = 0;
 
 // ===== Configuration captured from the user =====
 int getLED1Num   = 0;   // will be set to 1 once the user picks LED 1
 int getLED2Num   = 0;   // will be set to 2 once the user picks LED 2
-int getInterval1 = 0;   // blink interval for LED 1, in ms
-int getInterval2 = 0;   // blink interval for LED 2, in ms
+unsigned long getInterval1 = 0;   // blink interval for LED 1, in ms
+unsigned long getInterval2 = 0;   // blink interval for LED 2, in ms
 
 // ===== LED on/off state =====
 bool LED1State = false;
@@ -27,14 +27,14 @@ int currentSelection = 0;  // which LED THIS round's interval answer belongs to 
 
 
 // Starts/updates blinking on LED 1, only if LED 1 was the one selected.
-void changeFrequency1(int LEDNum, int LEDInterval) {
+void changeFrequency1(int LEDNum, unsigned long LEDInterval) {
   if (LEDNum == 1) {
     blinkLED1(LEDInterval);
   }
 }
 
 // Starts/updates blinking on LED 2, only if LED 2 was the one selected.
-void changeFrequency2(int LEDNum, int LEDInterval) {
+void changeFrequency2(int LEDNum, unsigned long LEDInterval) {
   if (LEDNum == 2) {
     blinkLED2(LEDInterval);
   }
@@ -42,7 +42,7 @@ void changeFrequency2(int LEDNum, int LEDInterval) {
 
 // Non-blocking blink for LED 1 (pin 2), using its own timestamp so it
 // doesn't interfere with LED 2's timing.
-void blinkLED1(int LEDInterval) {
+void blinkLED1(unsigned long LEDInterval) {
   currentLED1millis = millis();
 
   if (currentLED1millis >= previousLED1millis + LEDInterval) {
@@ -54,7 +54,7 @@ void blinkLED1(int LEDInterval) {
 
 // Non-blocking blink for LED 2 (pin 3), using its own timestamp so it
 // doesn't interfere with LED 1's timing.
-void blinkLED2(int LEDInterval) {
+void blinkLED2(unsigned long LEDInterval) {
   currentLED2millis = millis();
 
   if (currentLED2millis >= previousLED2millis + LEDInterval) {
@@ -107,7 +107,7 @@ void loop() {
         Serial.println("What interval (in msec)?");
         askedInterval = true;
         currentSelection = 1;
-      } else if (value = 2) {
+      } else if (value == 2) {
         getLED2Num = value;
         Serial.println("What interval (in msec)?");
         askedInterval = true;
